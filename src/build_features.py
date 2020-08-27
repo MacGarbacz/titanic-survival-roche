@@ -1,32 +1,43 @@
 import pandas as pd
+from src import helpers as h
 
-import sklearn
 
-def execute(input_file, output_file, force_write = True):
-    """Builds features
 
-    Args:
-        input_file (str): input file.
-    """
-    df = pd.read_csv(input_file)
+#A function to expand the existing columns of non-ordinal categorical features
+#into one-hot encoded features and perfom bucketization on those feature that permit it
 
-    df["Sex"] = df["Sex"].replace("male", 0)
-    df["Sex"] = df["Sex"].replace("female", 1)
+def feature_expansion(dataset):
 
-    embarked_dict = {}
-    embarked_dict_values = 0
-    for i in df.Embarked:
-        if i in embarked_dict.keys():
-            pass
-        else:
-            embarked_dict_values = embarked_dict_values + 1
-            embarked_dict[i] = embarked_dict_values
-    
-    for i in embarked_dict.keys():
-        df["Embarked"].replace(i, embarked_dict[i], inplace = True)
+    #Read in the data into a DataFrame
+    df = pd.read_csv("../data/" + dataset +".csv", sep = ";")
 
+    #Record the target variable
+    target = df["Survived"]
+
+    #Introduce two new variables - total family size and a binary flag for solo travellers
     df["FamilySize"] = df["SibSp"] + df["Parch"] + 1
     df["IsAlone"] = 0
     df.loc[df["FamilySize"] == 1, "IsAlone"] = 1
 
-    df.to_csv(output_file)
+    #Expand the Embarked variable into one-hot encoded features
+    embarked_onehot_features = pd.get_dummies(df['Embarked'])
+    df = pd.concat([df, embarked_onehot_features], axis=1)
+
+    #Expand the Sex variable into one-hot encoded features
+    sex_onehot_features = pd.get_dummies(df['Sex'])
+    df = pd.concat([df, sex_onehot_features], axis=1)
+
+    #Perform bucketization on the Age attribute
+    df['Age_cat'] = df['Age'].apply(h.catregorize_age)
+
+    #Drop attributes which won't be used for the training
+    del(df["Name"])
+    del(df["Ticket"])
+    del(df["Cabin"])
+    del(df["PassengerId"])
+
+
+    print(df.columns.values.tolist())
+
+
+feature_expansion("train")
