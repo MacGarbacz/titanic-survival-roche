@@ -39,3 +39,21 @@ def delete_unnecessary_attributes(df):
     del (df["Parch"])
     del (df["Fare"])
     del (df["Survived"])
+    del (df["Title"])
+
+#Extract titles from names of passengers and record the 5 most popular ones
+def extract_title(name):
+    parts = name.split(" ")
+    title = ""
+    for part in parts:
+        if "." in part:
+            title = part
+    return title
+
+#Convert titles into numerical values
+def convert_title(title):
+    titles = {'Mr.':1, 'Miss.':2, 'Mrs.':3, 'Master.':4, 'Dr.':5}
+    if title in titles.keys():
+        return titles[title]
+    else:
+        return 0
