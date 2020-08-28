@@ -31,6 +31,10 @@ def feature_expansion(dataset):
     # Perform bucketization on the Fare attribute
     df['Fare_cat'] = df['Fare'].apply(h.categorize_fare)
 
+    #Extract titles from names and then convert the titles into title categories
+    df['Title'] = df['Name'].apply(h.extract_title)
+    df['Title_value'] = df['Title'].apply(h.convert_title)
+
     # Drop attributes which won't be used for the training
     h.delete_unnecessary_attributes(df)
 
