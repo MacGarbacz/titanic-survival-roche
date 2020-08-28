@@ -1,38 +1,83 @@
-import numpy as np
-import pandas as pd
-import sklearn
 import pickle as pkl
-
-    # Split the data for training.
-df = pd.read_csv("data/train_bf.csv")
-
-y = df["Survived"]
-
-tr_col = []
-for c in df.columns:
-    if c == "Survived":
-        pass
-    else:
-        tr_col.append(c)
-
-# Create a classifier and select scoring methods.
+from src import build_features as bf
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
-clf = RandomForestClassifier(n_estimators=10)
+from sklearn.svm import LinearSVC
+from sklearn.neighbors import KNeighborsClassifier
+import numpy as np
 
+# Prepare the training data
+x_train, y_train = bf.feature_expansion("train")
 
-# Fit full model and predict on both train and test.
-clf.fit(df[tr_col], y)
-preds = clf.predict(df[tr_col])
-metric_name = "train_accuracy"
-metric_result = sklearn.metrics.accuracy_score(y, preds)
+# Prepare the test data
+x_val, y_val = bf.feature_expansion("val")
 
-model_pickle = open("data/model.pkl", 'wb')
-pkl.dump(clf, model_pickle)
-model_pickle.close()
+# Create pipelines to perform grid search on multiple candidate models
 
-# Return metrics and model.
-info = ""
-info = info + metric_name
-info = info + " for the model is "
-info = info + str(metric_result)
-print(info)
+# Logistic Regression
+pipe_lr = Pipeline([('classifier', LogisticRegression())])
+param_grid_lr = [{
+    'classifier__penalty': ['l1', 'l2'],
+    'classifier__C': np.logspace(-4, 4, 20),
+    'classifier__solver': ['liblinear'],
+    'classifier__max_iter': [10000]
+}]
+clf_lr = GridSearchCV(pipe_lr, param_grid=param_grid_lr, cv=5, verbose=True, n_jobs=8)
+clf_lr.fit(x_train, y_train)
+
+# Random Forest Classifier
+pipe_rf = Pipeline([('classifier', RandomForestClassifier())])
+param_grid_rf = [{
+    'classifier__n_estimators': list(range(50, 150, 5)),
+    'classifier__max_features': list(range(2, 10, 1)),
+    'classifier__oob_score': [True]
+}]
+clf_rf = GridSearchCV(pipe_rf, param_grid=param_grid_rf, cv=5, verbose=True, n_jobs=8)
+clf_rf.fit(x_train, y_train)
+
+# Linear SVC
+pipe_svc = Pipeline([('classifier', LinearSVC())])
+param_grid_svc = [{
+    'classifier__loss': ['hinge', 'squared_hinge'],
+    'classifier__C': np.logspace(-4, 4, 20),
+    'classifier__max_iter': [10000]
+}]
+clf_svc = GridSearchCV(pipe_svc, param_grid=param_grid_svc, cv=5, verbose=True, n_jobs=8)
+clf_svc.fit(x_train, y_train)
+
+# KNeighbors Classifier
+pipe_knn = Pipeline([('classifier', KNeighborsClassifier())])
+param_grid_knn = [{
+    'classifier__n_neighbors': range(1, 10)
+}]
+clf_knn = GridSearchCV(pipe_knn, param_grid=param_grid_knn, cv=5, verbose=True, n_jobs=8)
+clf_knn.fit(x_train, y_train)
+
+# Collect all the models
+models = [("Logistic Regression", clf_lr),
+          ("Random Forest Classifier", clf_rf),
+          ("LinearSVC", clf_svc),
+          ("KNeighbors", clf_knn)]
+
+# Determine the best model
+results = []
+for model_tupule in models:
+    model = model_tupule[1]
+    name = model_tupule[0]
+
+    y_pred = model.predict(x_val)
+    score_train = model.best_score_
+    score_val = model.score(x_val, y_val)
+
+    results.append((name, score_train, score_val))
+
+for result in results:
+    print(result)
+
+# model_pickle = open("data/model.pkl", 'wb')
+# pkl.dump(clf, model_pickle)
+# model_pickle.close()
