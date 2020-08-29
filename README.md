@@ -28,6 +28,66 @@ Since making the existing code easier to read, run and reuse requires changes to
 
 #### TASK6 - measures
 
+******
+Logistic Regression
+Best score in the training set:  0.8129813664596274
+Best score in the validation set:  0.8089887640449438
+Full Classification report:
+              precision    recall  f1-score   support
+
+           0       0.82      0.84      0.83        50
+           1       0.79      0.77      0.78        39
+
+    accuracy                           0.81        89
+   macro avg       0.81      0.80      0.81        89
+weighted avg       0.81      0.81      0.81        89
+
+******
+Random Forest Classifier
+Best score in the training set:  0.8155046583850931
+Best score in the validation set:  0.7415730337078652
+Full Classification report:
+              precision    recall  f1-score   support
+
+           0       0.75      0.82      0.78        50
+           1       0.74      0.64      0.68        39
+
+    accuracy                           0.74        89
+   macro avg       0.74      0.73      0.73        89
+weighted avg       0.74      0.74      0.74        89
+
+******
+LinearSVC
+Best score in the training set:  0.8204503105590062
+Best score in the validation set:  0.8314606741573034
+Full Classification report:
+              precision    recall  f1-score   support
+
+           0       0.83      0.88      0.85        50
+           1       0.83      0.77      0.80        39
+
+    accuracy                           0.83        89
+   macro avg       0.83      0.82      0.83        89
+weighted avg       0.83      0.83      0.83        89
+
+******
+KNeighbors
+Best score in the training set:  0.8242003105590061
+Best score in the validation set:  0.7865168539325843
+Full Classification report:
+              precision    recall  f1-score   support
+
+           0       0.79      0.84      0.82        50
+           1       0.78      0.72      0.75        39
+
+    accuracy                           0.79        89
+   macro avg       0.79      0.78      0.78        89
+weighted avg       0.79      0.79      0.79        89
+
+**********
+Best model: LinearSVC
+Accuracy over validation set: 0.8314606741573034
+
 #### TASK7 - docker
 
 #### TASK8 - tests

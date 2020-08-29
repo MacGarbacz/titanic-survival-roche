@@ -64,8 +64,12 @@ models = [("Logistic Regression", clf_lr),
           ("KNeighbors", clf_knn)]
 
 # Determine the best model
-results = []
+best_score = 0
+best_model_name = ""
+best_model = None
+
 for model_tupule in models:
+
     model = model_tupule[1]
     name = model_tupule[0]
 
@@ -73,11 +77,24 @@ for model_tupule in models:
     score_train = model.best_score_
     score_val = model.score(x_val, y_val)
 
-    results.append((name, score_train, score_val))
+    if score_val > best_score:
+        best_score = score_val
+        best_model_name = name
+        best_model = model
 
-for result in results:
-    print(result)
+    report = classification_report(y_val, y_pred)
 
-# model_pickle = open("data/model.pkl", 'wb')
-# pkl.dump(clf, model_pickle)
-# model_pickle.close()
+    print("******")
+    print(name)
+    print("Best score in the training set: ", score_train)
+    print("Best score in the validation set: ", score_val)
+    print("Full Classification report:")
+    print(report)
+
+print("**********")
+print("Best model:", best_model_name)
+print("Accuracy over validation set:", best_score)
+
+model_pickle = open("../data/model.pkl", 'wb')
+pkl.dump(best_model, model_pickle)
+model_pickle.close()
