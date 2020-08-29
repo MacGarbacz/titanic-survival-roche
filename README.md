@@ -30,7 +30,9 @@ Since making the existing code easier to read, run and reuse requires changes to
 
 ******
 Logistic Regression
+
 Best score in the training set:  0.8129813664596274
+
 Best score in the validation set:  0.8089887640449438
 
 Full Classification report:
@@ -45,7 +47,9 @@ Full Classification report:
 
 ******
 Random Forest Classifier
+
 Best score in the training set:  0.8155046583850931
+
 Best score in the validation set:  0.7415730337078652
 
 Full Classification report:
@@ -60,7 +64,9 @@ Full Classification report:
 
 ******
 LinearSVC
+
 Best score in the training set:  0.8204503105590062
+
 Best score in the validation set:  0.8314606741573034
 
 Full Classification report:
@@ -75,7 +81,9 @@ Full Classification report:
 
 ******
 KNeighbors
+
 Best score in the training set:  0.8242003105590061
+
 Best score in the validation set:  0.7865168539325843
 
 Full Classification report:
@@ -90,6 +98,7 @@ Full Classification report:
 
 **********
 Best model: LinearSVC
+
 Accuracy over validation set: 0.8314606741573034
 
 #### TASK7 - docker
