@@ -1,0 +1,4 @@
+PassengerId;Survived;Pclass;Name;Sex;Age;SibSp;Parch;Ticket;Fare;Cabin;Embarked
+1;0;3;Celotti, Mr. Francesco;male;24;0;0;343275;8.05;;S
+2;0;3;Celotti, Mr. Francesco;;24;0;0;343275;8.05;;Q
+3;0;3;Celotti, Mr. Francesco;male;;0;0;343275;8.05;;C
