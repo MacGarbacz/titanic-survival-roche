@@ -11,10 +11,14 @@ from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
 
 # Prepare the training data
-x_train, y_train = bf.feature_expansion("train")
+x_train = bf.feature_expansion("train", "train")
+y_train = x_train['Survived']
+del (x_train["Survived"])
 
 # Prepare the test data
-x_val, y_val = bf.feature_expansion("val")
+x_val = bf.feature_expansion("val", "val")
+y_val = y_train['Survived']
+del (x_val["Survived"])
 
 # Create pipelines to perform grid search on multiple candidate models
 

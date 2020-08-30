@@ -5,12 +5,12 @@ from src import helpers as h
 # A function to expand the existing columns of non-ordinal categorical features
 # into one-hot encoded features and perfom bucketization on those feature that permit it.
 # Returns the expanded, cleaned DataFrame object containing the attributes and the target variable
-def feature_expansion(dataset):
+def feature_expansion(dataset, mode):
     # Read in the data into a DataFrame
-    df = pd.read_csv("../data/" + dataset + ".csv", sep=";")
-
-    # Record the target variable
-    target = df["Survived"]
+    if mode == 'api':
+        df = dataset
+    elif mode == 'train' or mode == 'test':
+        df = pd.read_csv("../data/" + dataset + ".csv", sep=";")
 
     # Introduce two new variables - total family size and a binary flag for solo travellers
     df["FamilySize"] = df["SibSp"] + df["Parch"] + 1
@@ -31,13 +31,24 @@ def feature_expansion(dataset):
     # Perform bucketization on the Fare attribute
     df['Fare_cat'] = df['Fare'].apply(h.categorize_fare)
 
-    #Extract titles from names and then convert the titles into title categories
+    # Extract titles from names and then convert the titles into title categories
     df['Title'] = df['Name'].apply(h.extract_title)
     df['Title_value'] = df['Title'].apply(h.convert_title)
 
     # Drop attributes which won't be used for the training
     h.delete_unnecessary_attributes(df)
 
-    return df, target
+    # Add columns if record relayed via an api call
+    if mode == 'api':
+        columns = ['male', 'female', 'C', 'S', 'Q']
+        for col in columns:
+            if col not in df.columns.values.tolist():
+                df[col] = 0
 
-feature_expansion('train')
+        valid_order = ['Pclass', 'FamilySize', 'IsAlone', 'C', 'Q', 'S', 'female', 'male', 'Age_cat',
+                       'Fare_cat', 'Title_value']
+
+        # Reorder the columns
+        df = df[valid_order]
+
+    return df
