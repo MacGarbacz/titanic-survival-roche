@@ -38,7 +38,6 @@ def delete_unnecessary_attributes(df):
     del (df["SibSp"])
     del (df["Parch"])
     del (df["Fare"])
-    del (df["Survived"])
     del (df["Title"])
 
 #Extract titles from names of passengers and record the 5 most popular ones
