@@ -11,13 +11,13 @@ from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
 
 # Prepare the training data
-x_train = bf.feature_expansion("train", "train")
+x_train = bf.feature_expansion('train', "train")
 y_train = x_train['Survived']
 del (x_train["Survived"])
 
 # Prepare the test data
-x_val = bf.feature_expansion("val", "val")
-y_val = y_train['Survived']
+x_val = bf.feature_expansion('val', "val")
+y_val = x_val['Survived']
 del (x_val["Survived"])
 
 # Create pipelines to perform grid search on multiple candidate models
@@ -72,6 +72,9 @@ best_score = 0
 best_model_name = ""
 best_model = None
 
+
+
+#Evaluate the models and pick the best one given its accuracy over the val set and the classification report
 for model_tupule in models:
 
     model = model_tupule[1]
@@ -86,8 +89,11 @@ for model_tupule in models:
         best_model_name = name
         best_model = model
 
+    #Generate the classification report to better illustrate precision, recall and f1 scores over both classes
     report = classification_report(y_val, y_pred)
 
+
+    #Show the results in a user-friendly formatting
     print("******")
     print(name)
     print("Best score in the training set: ", score_train)

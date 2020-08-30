@@ -9,7 +9,7 @@ def feature_expansion(dataset, mode):
     # Read in the data into a DataFrame
     if mode == 'api':
         df = dataset
-    elif mode == 'train' or mode == 'test':
+    else:
         df = pd.read_csv("../data/" + dataset + ".csv", sep=";")
 
     # Introduce two new variables - total family size and a binary flag for solo travellers
