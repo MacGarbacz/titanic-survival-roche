@@ -35,7 +35,7 @@ Along with the work done in the build_features.py, I decided to make use of a Ju
 
 Breakdown by attribute:
 
-* `PassengerId' - Used as an index only. Not used in the final DataFrame.
+* `PassengerId` - Used as an index only. Not used in the final DataFrame.
 
 * `Survived` - Used as the target variable during training.
 
@@ -64,7 +64,7 @@ The new attribute with the category was created - `Age_cat`.
 
 The final set of attributes used during training was as follows:
 
-*['Pclass', 'FamilySize', 'IsAlone', 'C', 'Q', 'S', 'female', 'male', 'Age_cat','Fare_cat', 'Title_value']*
+*`['Pclass', 'FamilySize', 'IsAlone', 'C', 'Q', 'S', 'female', 'male', 'Age_cat','Fare_cat', 'Title_value']`*
 
 The DataFrame didn't need any normalization or dealing with NaN values as the functions used to expand the features dealt with that automatically.
 
@@ -75,13 +75,13 @@ Then, once the training has been completed, the performance of each could be eva
 
 The models I've chosen were:
 
-* LinearRegression - since it's proven to work well for binary classification problems as well as relatively small datasets.
+* `LinearRegression` - since it's proven to work well for binary classification problems as well as relatively small datasets.
 
-* RandomForestClassifier - as it was already provided as a candidate architecture.
+* `RandomForestClassifier` - as it was already provided as a candidate architecture.
 
-* LinearSVC - since it's making use of the support vectors and provides wide support for penalty functions and has proven to be flexible for both dense and sparse datasets.
+* `LinearSVC` - since it's making use of the support vectors and provides wide support for penalty functions and has proven to be flexible for both dense and sparse datasets.
 
-* KNeighbors - to include a classifier which makes direct use of distances between the samples.
+* `KNeighbors` - to include a classifier which makes direct use of distances between the samples.
 
 #### TASK6 - measures
 
