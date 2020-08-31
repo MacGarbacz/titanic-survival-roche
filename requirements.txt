@@ -1,0 +1,5 @@
+Flask==1.1.2
+pandas==1.0.3
+numpy==1.16.5
+sklearn==0.23.2
+json==2.0.9
